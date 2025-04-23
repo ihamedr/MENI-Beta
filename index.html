@@ -170,6 +170,11 @@
   </div>
 
   <script>
+    // اگر قبلاً تایید شده بود، مستقیم به join.html برو
+    if (localStorage.getItem("verified") === "true") {
+      window.location.href = "join.html";
+    }
+
     const gifs = document.querySelectorAll(".gif-box img");
     const textBox = document.getElementById("typeText");
     const texts = ["Create Memes", "Get Votes", "Make Money!"];
@@ -213,6 +218,7 @@
       }
 
       if (enteredID === realID) {
+        localStorage.setItem("verified", "true"); // تایید موفق ذخیره میشه
         window.location.href = "join.html";
       } else {
         window.location.href = "error.html";
