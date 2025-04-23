@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>MENI Beta Joined</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
 
@@ -23,6 +24,7 @@
       flex-direction: column;
       text-align: center;
       color: #0ff;
+      padding: 20px;
     }
 
     .bg {
@@ -48,40 +50,96 @@
     }
 
     h1 {
-      font-size: 1.8em;
+      font-size: 1.2em;
       font-family: 'Press Start 2P', cursive;
       text-shadow: 0 0 10px #0ff;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .ref-container {
+      background: #111;
+      border: 2px solid #0ff;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.85em;
+      text-shadow: 0 0 5px #0ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      max-width: 90%;
     }
 
     .ref-link {
-      background: #111;
-      border: 2px solid #0ff;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 1.2em;
-      word-break: break-all;
-      text-shadow: 0 0 5px #0ff;
+      color: #0ff;
+      word-break: break-word;
+      text-decoration: underline;
+    }
+
+    .copy-btn {
+      background: #0ff;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.85em;
+      box-shadow: 0 0 8px #0ff;
+      transition: background 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: #00cccc;
+    }
+
+    .gif {
+      width: 80%;
+      max-width: 280px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .gif img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
     }
   </style>
 </head>
 <body>
   <div class="bg"></div>
-  <h1>You’ve successfully joined MENI Beta!</h1>
+  <div class="gif"><img src="video4.gif" alt="Welcome Animation"></div>
+  <h1>You’ve successfully joined<br>MENI Beta!</h1>
   <div>Your referral link:</div>
-  <div class="ref-link" id="refLink"></div>
+  <div class="ref-container">
+    <a class="ref-link" id="refLink" href="#" target="_blank">Loading...</a>
+    <button class="copy-btn" onclick="copyLink()">Copy</button>
+  </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const userId = params.get("user_id");
-    const botUsername = "MENIDAO_Test_Bot";
-
-    if (userId) {
-      const fullLink = https://t.me/${botUsername}?start=ref_${userId};
-      document.getElementById("refLink").textContent = fullLink;
-    } else {
-      document.getElementById("refLink").textContent = "No referral ID found.";
+    function copyLink() {
+      const link = document.getElementById("refLink").href;
+      navigator.clipboard.writeText(link).then(() => {
+        alert("Referral link copied!");
+      }).catch(() => {
+        alert("Failed to copy link.");
+      });
     }
+
+    window.onload = function () {
+      if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+        const userId = Telegram.WebApp.initDataUnsafe.user.id;
+        const fullLink = https://t.me/MENIDAO_Test_Bot?start=${userId};
+        const refElem = document.getElementById("refLink");
+        refElem.href = fullLink;
+        refElem.textContent = fullLink;
+      } else {
+        document.getElementById("refLink").textContent = "Failed to load referral link. Open in Telegram.";
+      }
+    };
   </script>
 </body>
 </html>
