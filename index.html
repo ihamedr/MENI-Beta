@@ -72,27 +72,80 @@
       text-align: center;
     }
 
-    .join-btn {
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       margin-top: 30px;
+    }
+
+    .input-box {
       padding: 12px 30px;
       background: transparent;
       border: 2px solid #0ff;
       color: #0ff;
-      font-size: 1em;
-      text-decoration: none;
+      font-size: 1.2em;
       font-family: 'Orbitron', sans-serif;
       cursor: pointer;
       border-radius: 10px;
+      box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
+      width: 250px;
+      text-align: center;
+      position: relative;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .input-box:hover {
+      background: #0ff;
+      color: black;
+      text-shadow: none;
+      box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
+    }
+
+    .input-box:focus-within {
+      color: #0ff;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      background-color: transparent;
+      color: #0ff;
+      text-align: center;
+    }
+
+    input::placeholder {
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    button {
+      padding: 12px 25px;
+      background: transparent;
+      border: 2px solid #0ff;
+      color: #0ff;
+      font-size: 1.2em;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+      border-radius: 20px;
       box-shadow: 0 0 15px #0ff, 0 0 5px #0ff inset;
       transition: all 0.3s ease;
     }
 
-    .join-btn:hover {
+    button:hover {
       background: #0ff;
       color: black;
       text-shadow: none;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
     }
+
+    .input-box:focus-within {
+      background-color: rgba(0, 255, 255, 0.2);
+    }
+
   </style>
 </head>
 <body>
@@ -106,7 +159,13 @@
 
   <div class="typewriter" id="typeText"></div>
 
-  <a href="join.html" class="join-btn">Join MENI Beta</a>
+  <!-- Input for Telegram ID -->
+  <div class="input-container">
+    <div class="input-box">
+      <input type="text" id="tgID" placeholder="Enter Your TG ID" />
+    </div>
+    <button onclick="checkID()">Submit</button>
+  </div>
 
   <script>
     const gifs = document.querySelectorAll(".gif-box img");
@@ -136,11 +195,23 @@
           index++;
           if (index >= gifs.length) index = 0;
           showNext();
-        }, 3000);
+        }, 1500); // Reduced time to 1.5 seconds
       });
     }
 
     showNext();
+
+    // Function to check if the entered TG ID matches the user's real TG ID
+    function checkID() {
+      const enteredID = document.getElementById('tgID').value;
+      const realID = "realUsername"; // Replace with the actual real Telegram username (this can be fetched dynamically)
+
+      if (enteredID === realID) {
+        window.location.href = "join.html";  // Redirect to the join page if IDs match
+      } else {
+        window.location.href = "error.html";  // Redirect to error page if IDs don't match
+      }
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Error Page</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: black;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .bg {
+      position: fixed;
+      width: 300%;
+      height: 300%;
+      background:
+        radial-gradient(circle at 25% 25%, #0ff, transparent 40%),
+        radial-gradient(circle at 75% 30%, #8f00ff, transparent 40%),
+        radial-gradient(circle at 50% 80%, #00ff66, transparent 40%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      animation: rotateBg 30s linear infinite;
+      filter: blur(120px);
+      opacity: 0.4;
+      z-index: -1;
+      transform-origin: center;
+    }
+
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .gif-box {
+      width: 400px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .gif-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .gif-box img.active {
+      display: block;
+    }
+
+    .typewriter {
+      margin-top: 20px;
+      font-size: 1.8em;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      text-shadow: 0 0 10px #0ff;
+      min-height: 2em;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="gif-box">
+    <img src="errorGif.gif" class="active" />
+  </div>
+
+  <div class="typewriter" id="typeText">Error: Invalid Telegram ID</div>
+
+  <script>
+    const gifs = document.querySelectorAll(".gif-box img");
+    const textBox = document.getElementById("typeText");
+    const texts = ["Error: Invalid Telegram ID"];
+    let index = 0;
+
+    function typeText(text, callback) {
+      textBox.innerHTML = "";
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          textBox.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, 100);
+    }
+
+    function showNext() {
+      gifs.forEach(gif => gif.classList.remove("active"));
+      gifs[index].classList.add("active");
+      typeText(texts[index], () => {
+        setTimeout(() => {
+          index++;
+          if (index >= gifs.length) index = 0;
+          showNext();
+        }, 1500); // Reduced time to 1.5 seconds
+      });
+    }
+
+    showNext();
+  </script>
+</body>
+</html>
