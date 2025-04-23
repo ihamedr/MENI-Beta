@@ -95,12 +95,7 @@
       transition: all 0.3s ease;
     }
 
-    .input-box:hover {
-      background: #0ff;
-      color: black;
-      box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
-    }
-
+    .input-box:hover,
     .input-box:focus-within {
       background: #0ff;
       color: black;
@@ -115,19 +110,16 @@
       background-color: transparent;
       color: #0ff;
       text-align: center;
-      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input:focus {
+      color: black;
     }
 
     input::placeholder {
       color: #0ff;
       text-shadow: 0 0 5px #0ff;
-    }
-
-    input:focus,
-    input:hover {
-      color: black;
-      background-color: #0ff;
-      text-shadow: none;
     }
 
     button {
@@ -170,11 +162,6 @@
   </div>
 
   <script>
-    // اگر قبلاً تایید شده بود، مستقیم به join.html برو
-    if (localStorage.getItem("verified") === "true") {
-      window.location.href = "join.html";
-    }
-
     const gifs = document.querySelectorAll(".gif-box img");
     const textBox = document.getElementById("typeText");
     const texts = ["Create Memes", "Get Votes", "Make Money!"];
@@ -218,7 +205,15 @@
       }
 
       if (enteredID === realID) {
-        localStorage.setItem("verified", "true"); // تایید موفق ذخیره میشه
+        // ذخیره در Google Sheet
+        fetch("https://script.google.com/macros/s/AKfycbzroT0gdaJxJiLmtIaGHKODQgssIA4Wl_QxR3ZSG7bpAua8ZiDGWlCE17cfiGwE7Nfu/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: "username=" + encodeURIComponent(realID)
+        });
+
         window.location.href = "join.html";
       } else {
         window.location.href = "error.html";
