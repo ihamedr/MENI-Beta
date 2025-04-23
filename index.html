@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Neon Vibes</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
 
@@ -87,10 +86,12 @@
       color: #0ff;
       font-size: 1.2em;
       font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
       border-radius: 10px;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
       width: 250px;
       text-align: center;
+      position: relative;
       margin-bottom: 20px;
       transition: all 0.3s ease;
     }
@@ -98,7 +99,12 @@
     .input-box:hover {
       background: #0ff;
       color: black;
+      text-shadow: none;
       box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
+    }
+
+    .input-box:hover input {
+      color: black;
     }
 
     input {
@@ -109,6 +115,7 @@
       background-color: transparent;
       color: #0ff;
       text-align: center;
+      transition: all 0.3s ease;
     }
 
     input::placeholder {
@@ -132,8 +139,10 @@
     button:hover {
       background: #0ff;
       color: black;
+      text-shadow: none;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
     }
+
   </style>
 </head>
 <body>
@@ -147,7 +156,6 @@
 
   <div class="typewriter" id="typeText"></div>
 
-  <!-- Input for Telegram ID -->
   <div class="input-container">
     <div class="input-box">
       <input type="text" id="tgID" placeholder="Enter Your TG ID" />
@@ -190,19 +198,28 @@
     showNext();
 
     function checkID() {
-      const enteredID = document.getElementById('tgID').value.trim().toLowerCase();
-      const realID = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
-
-      if (!realID) {
-        alert("Error: Unable to fetch Telegram ID. Please use inside Telegram.");
+      const enteredID = document.getElementById('tgID').value.trim();
+      if (!enteredID || enteredID.length < 3) {
+        window.location.href = "error.html";
         return;
       }
 
-      if (enteredID === realID) {
-        window.location.href = "join.html";
-      } else {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwKzuXd7lWzSyvgop8vMFMyuLLvULgq4HRgSAv12uJ1hdqXERGryLtYCe-oWUOu7Ffd/exec';
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: new URLSearchParams({ tgID: enteredID })
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = "join.html";
+        } else {
+          window.location.href = "error.html";
+        }
+      })
+      .catch(() => {
         window.location.href = "error.html";
-      }
+      });
     }
   </script>
 </body>
