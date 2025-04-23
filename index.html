@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MENI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: black;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .bg {
+      position: fixed;
+      width: 300%;
+      height: 300%;
+      background:
+        radial-gradient(circle at 25% 25%, #0ff, transparent 40%),
+        radial-gradient(circle at 75% 30%, #8f00ff, transparent 40%),
+        radial-gradient(circle at 50% 80%, #00ff66, transparent 40%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      animation: rotateBg 30s linear infinite;
+      filter: blur(120px);
+      opacity: 0.4;
+      z-index: -1;
+      transform-origin: center;
+    }
+
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .gif-box {
+      width: 400px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .gif-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .gif-box img.active {
+      display: block;
+    }
+
+    .typewriter {
+      margin-top: 20px;
+      font-size: 1.8em;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      text-shadow: 0 0 10px #0ff;
+      min-height: 2em;
+      text-align: center;
+    }
+
+    .join-btn {
+      margin-top: 30px;
+      padding: 14px 28px;
+      font-size: 1em;
+      font-family: 'Orbitron', sans-serif;
+      color: #0ff;
+      background: black;
+      border: 2px solid #0ff;
+      border-radius: 10px;
+      cursor: pointer;
+      text-shadow: 0 0 5px #0ff;
+      box-shadow: 0 0 10px #0ff, 0 0 20px #8f00ff inset;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .join-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .join-btn:hover::before {
+      left: 100%;
+    }
+
+    .join-btn:hover {
+      background: #0ff;
+      color: black;
+      text-shadow: none;
+      box-shadow: 0 0 20px #0ff, 0 0 30px #8f00ff inset;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="gif-box">
+    <img src="video1.gif" class="active" />
+    <img src="video2.gif" />
+    <img src="video3.gif" />
+  </div>
+  <div class="typewriter" id="typeText"></div>
+  <button class="join-btn">Join MENI Beta!</button>
+
+  <script>
+    const gifs = document.querySelectorAll(".gif-box img");
+    const textBox = document.getElementById("typeText");
+    const texts = ["Create Memes", "Get Votes", "Make Money!"];
+    let index = 0;
+
+    function typeText(text, callback) {
+      textBox.innerHTML = "";
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          textBox.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, 100);
+    }
+
+    function showNext() {
+      gifs.forEach(gif => gif.classList.remove("active"));
+      gifs[index].classList.add("active");
+      typeText(texts[index], () => {
+        setTimeout(() => {
+          index++;
+          if (index >= gifs.length) index = 0;
+          showNext();
+        }, 3000);
+      });
+    }
+
+    showNext();
+  </script>
+</body>
+</html>
