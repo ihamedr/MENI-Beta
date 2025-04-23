@@ -79,6 +79,7 @@
   <div class="typewriter" id="typeText"></div>
 
   <script>
+    // نمایش پیغام موفقیت
     const text = "You’ve successfully joined MENI Beta!";
     const textBox = document.getElementById("typeText");
 
@@ -91,6 +92,38 @@
         clearInterval(interval);
       }
     }, 75);
+
+    // دریافت آیدی از URL (یا از سیستم ذخیره‌سازی محلی)
+    const userID = new URLSearchParams(window.location.search).get('userID'); // فرض بر این که آیدی از طریق URL ارسال شده باشد
+
+    // تابع برای ارسال آیدی به گوگل شیت
+    function storeIDInGoogleSheet(id) {
+      const scriptURL = "https://script.google.com/macros/s/AKfycbwKzuXd7lWzSyvgop8vMFMyuLLvULgq4HRgSAv12uJ1hdqXERGryLtYCe-oWUOu7Ffd/exec";
+      
+      const data = {
+        'userID': id
+      };
+
+      // ارسال درخواست POST به اسکریپت گوگل
+      fetch(scriptURL, {
+        method: 'POST',
+        body: new URLSearchParams(data),
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log('Success:', result);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    // اگر آیدی موجود بود، ارسال به شیت
+    if (userID) {
+      storeIDInGoogleSheet(userID);
+    } else {
+      console.log("User ID not found.");
+    }
   </script>
 </body>
 </html>

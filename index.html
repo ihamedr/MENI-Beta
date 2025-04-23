@@ -86,7 +86,6 @@
       color: #0ff;
       font-size: 1.2em;
       font-family: 'Orbitron', sans-serif;
-      cursor: pointer;
       border-radius: 10px;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
       width: 250px;
@@ -103,8 +102,8 @@
       box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
     }
 
-    .input-box:hover input {
-      color: black;
+    .input-box:focus-within {
+      background-color: rgba(0, 255, 255, 0.2);
     }
 
     input {
@@ -115,12 +114,23 @@
       background-color: transparent;
       color: #0ff;
       text-align: center;
-      transition: all 0.3s ease;
     }
 
     input::placeholder {
       color: #0ff;
       text-shadow: 0 0 5px #0ff;
+    }
+
+    /* New: change input text and placeholder to black when hovered/focused */
+    .input-box:hover input,
+    .input-box:focus-within input {
+      color: black;
+    }
+
+    .input-box:hover input::placeholder,
+    .input-box:focus-within input::placeholder {
+      color: #888;
+      text-shadow: none;
     }
 
     button {
@@ -142,7 +152,6 @@
       text-shadow: none;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
     }
-
   </style>
 </head>
 <body>
@@ -198,28 +207,14 @@
     showNext();
 
     function checkID() {
-      const enteredID = document.getElementById('tgID').value.trim();
-      if (!enteredID || enteredID.length < 3) {
+      const enteredID = document.getElementById('tgID').value.trim().toLowerCase();
+      const realID = "yourusername"; // جایگزین کن با یوزرنیم واقعی یا سیستم چک داینامیک
+
+      if (enteredID === realID.toLowerCase()) {
+        window.location.href = "join.html";
+      } else {
         window.location.href = "error.html";
-        return;
       }
-
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwKzuXd7lWzSyvgop8vMFMyuLLvULgq4HRgSAv12uJ1hdqXERGryLtYCe-oWUOu7Ffd/exec';
-
-      fetch(scriptURL, {
-        method: 'POST',
-        body: new URLSearchParams({ tgID: enteredID })
-      })
-      .then(response => {
-        if (response.ok) {
-          window.location.href = "join.html";
-        } else {
-          window.location.href = "error.html";
-        }
-      })
-      .catch(() => {
-        window.location.href = "error.html";
-      });
     }
   </script>
 </body>
