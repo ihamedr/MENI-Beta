@@ -53,18 +53,7 @@
       font-size: 1.2em;
       font-family: 'Press Start 2P', cursive;
       text-shadow: 0 0 10px #0ff;
-      margin-bottom: 15px;
-    }
-
-    .ref-link {
-      background: #111;
-      border: 2px solid #0ff;
-      padding: 8px 15px;
-      border-radius: 10px;
-      font-size: 0.9em;
-      word-break: break-all;
-      text-shadow: 0 0 5px #0ff;
-      max-width: 100%;
+      margin-top: 20px;
     }
 
     .gif-box {
@@ -87,25 +76,5 @@
     <img src="video4.gif" alt="Welcome GIF" />
   </div>
   <h1>You’ve successfully joined MENI Beta!</h1>
-  <div>Your referral link:</div>
-  <div class="ref-link" id="refLink">Loading...</div>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
-    const refBox = document.getElementById("refLink");
-
-    try {
-      const user = Telegram.WebApp.initDataUnsafe.user;
-      if (user && user.id) {
-        const userId = user.id;
-        const fullLink = https://t.me/MENIDAO_Test_Bot?start=${userId};
-        refBox.textContent = fullLink;
-      } else {
-        refBox.textContent = "Please open this page via Telegram.";
-      }
-    } catch (e) {
-      refBox.textContent = "Error generating referral link.";
-    }
-  </script>
 </body>
 </html>
