@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Neon Vibes</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
 
@@ -90,7 +91,6 @@
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
       width: 250px;
       text-align: center;
-      position: relative;
       margin-bottom: 20px;
       transition: all 0.3s ease;
     }
@@ -98,12 +98,13 @@
     .input-box:hover {
       background: #0ff;
       color: black;
-      text-shadow: none;
       box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
     }
 
     .input-box:focus-within {
-      background-color: rgba(0, 255, 255, 0.2);
+      background: #0ff;
+      color: black;
+      box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
     }
 
     input {
@@ -114,6 +115,7 @@
       background-color: transparent;
       color: #0ff;
       text-align: center;
+      transition: all 0.3s ease;
     }
 
     input::placeholder {
@@ -121,15 +123,10 @@
       text-shadow: 0 0 5px #0ff;
     }
 
-    /* New: change input text and placeholder to black when hovered/focused */
-    .input-box:hover input,
-    .input-box:focus-within input {
+    input:focus,
+    input:hover {
       color: black;
-    }
-
-    .input-box:hover input::placeholder,
-    .input-box:focus-within input::placeholder {
-      color: #888;
+      background-color: #0ff;
       text-shadow: none;
     }
 
@@ -149,7 +146,6 @@
     button:hover {
       background: #0ff;
       color: black;
-      text-shadow: none;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
     }
   </style>
@@ -165,6 +161,7 @@
 
   <div class="typewriter" id="typeText"></div>
 
+  <!-- Input for Telegram ID -->
   <div class="input-container">
     <div class="input-box">
       <input type="text" id="tgID" placeholder="Enter Your TG ID" />
@@ -208,9 +205,14 @@
 
     function checkID() {
       const enteredID = document.getElementById('tgID').value.trim().toLowerCase();
-      const realID = "yourusername"; // جایگزین کن با یوزرنیم واقعی یا سیستم چک داینامیک
+      const realID = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
 
-      if (enteredID === realID.toLowerCase()) {
+      if (!realID) {
+        alert("Error: Unable to fetch Telegram ID. Please use inside Telegram.");
+        return;
+      }
+
+      if (enteredID === realID) {
         window.location.href = "join.html";
       } else {
         window.location.href = "error.html";
