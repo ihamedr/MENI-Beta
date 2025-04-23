@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Neon Vibes</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
 
@@ -86,12 +87,10 @@
       color: #0ff;
       font-size: 1.2em;
       font-family: 'Orbitron', sans-serif;
-      cursor: pointer;
       border-radius: 10px;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
       width: 250px;
       text-align: center;
-      position: relative;
       margin-bottom: 20px;
       transition: all 0.3s ease;
     }
@@ -99,12 +98,7 @@
     .input-box:hover {
       background: #0ff;
       color: black;
-      text-shadow: none;
       box-shadow: 0 0 25px #0ff, 0 0 15px #0ff inset;
-    }
-
-    .input-box:focus-within {
-      color: #0ff;
     }
 
     input {
@@ -138,14 +132,8 @@
     button:hover {
       background: #0ff;
       color: black;
-      text-shadow: none;
       box-shadow: 0 0 20px #0ff, 0 0 10px #0ff inset;
     }
-
-    .input-box:focus-within {
-      background-color: rgba(0, 255, 255, 0.2);
-    }
-
   </style>
 </head>
 <body>
@@ -195,21 +183,25 @@
           index++;
           if (index >= gifs.length) index = 0;
           showNext();
-        }, 1500); // Reduced time to 1.5 seconds
+        }, 1500);
       });
     }
 
     showNext();
 
-    // Function to check if the entered TG ID matches the user's real TG ID
     function checkID() {
-      const enteredID = document.getElementById('tgID').value;
-      const realID = "realUsername"; // Replace with the actual real Telegram username (this can be fetched dynamically)
+      const enteredID = document.getElementById('tgID').value.trim().toLowerCase();
+      const realID = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
+
+      if (!realID) {
+        alert("Error: Unable to fetch Telegram ID. Please use inside Telegram.");
+        return;
+      }
 
       if (enteredID === realID) {
-        window.location.href = "join.html";  // Redirect to the join page if IDs match
+        window.location.href = "join.html";
       } else {
-        window.location.href = "error.html";  // Redirect to error page if IDs don't match
+        window.location.href = "error.html";
       }
     }
   </script>
