@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Neon Vibes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
@@ -23,43 +22,6 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-    }
-
-    /* Splash Screen Styles */
-    #splash-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('splash.png') no-repeat center center;
-      background-size: cover;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      padding-bottom: 60px;
-    }
-
-    .neon-bar {
-      width: 80%;
-      height: 8px;
-      background: rgba(0, 255, 255, 0.2);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff inset;
-    }
-
-    .neon-bar .progress {
-      width: 0%;
-      height: 100%;
-      background: #0ff;
-      animation: fillBar 2.5s ease forwards;
-    }
-
-    @keyframes fillBar {
-      to { width: 100%; }
     }
 
     .bg {
@@ -181,13 +143,6 @@
   </style>
 </head>
 <body>
-  <!-- Splash screen -->
-  <div id="splash-screen">
-    <div class="neon-bar">
-      <div class="progress"></div>
-    </div>
-  </div>
-
   <div class="bg"></div>
 
   <div class="gif-box">
@@ -206,20 +161,12 @@
   </div>
 
   <script>
-    // مخفی کردن لودینگ بعد از چند ثانیه
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.getElementById("splash-screen").style.display = "none";
-      }, 2600);
-    });
-
     const gifs = document.querySelectorAll(".gif-box img");
     const textBox = document.getElementById("typeText");
     const texts = ["Create Memes", "Get Votes", "Make Money!"];
     let index = 0;
 
-    Telegram.WebApp.ready();
-
+    // ریدایرکت در صورتی که قبلاً وارد شده باشه
     const realID = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
     const storedID = localStorage.getItem("joinedUser");
     if (realID && storedID === realID) {
@@ -263,6 +210,7 @@
       }
 
       if (enteredID === realID) {
+        // ارسال به Google Sheet
         fetch("https://script.google.com/macros/s/AKfycbzroT0gdaJxJiLmtIaGHKODQgssIA4Wl_QxR3ZSG7bpAua8ZiDGWlCE17cfiGwE7Nfu/exec", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
