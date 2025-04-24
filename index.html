@@ -7,7 +7,11 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&display=swap');
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       height: 100vh;
@@ -157,17 +161,17 @@
   </div>
 
   <script>
-    // اگر قبلاً وارد شده، مستقیم بفرست به join.html
-    const storedUsername = localStorage.getItem("joinedUser");
-    const currentUsername = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
-    if (storedUsername && storedUsername === currentUsername) {
-      window.location.href = "join.html";
-    }
-
     const gifs = document.querySelectorAll(".gif-box img");
     const textBox = document.getElementById("typeText");
     const texts = ["Create Memes", "Get Votes", "Make Money!"];
     let index = 0;
+
+    // ریدایرکت در صورتی که قبلاً وارد شده باشه
+    const realID = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
+    const storedID = localStorage.getItem("joinedUser");
+    if (realID && storedID === realID) {
+      window.location.href = "join.html";
+    }
 
     function typeText(text, callback) {
       textBox.innerHTML = "";
@@ -188,8 +192,7 @@
       gifs[index].classList.add("active");
       typeText(texts[index], () => {
         setTimeout(() => {
-          index++;
-          if (index >= gifs.length) index = 0;
+          index = (index + 1) % gifs.length;
           showNext();
         }, 1500);
       });
@@ -201,24 +204,20 @@
       const enteredID = document.getElementById('tgID').value.trim().toLowerCase();
       const realID = Telegram.WebApp.initDataUnsafe?.user?.username?.toLowerCase();
 
-      if (!realID) {
-        alert("Error: Unable to fetch Telegram ID. Please use inside Telegram.");
+      if (!realID || !enteredID) {
+        window.location.href = "error.html";
         return;
       }
 
       if (enteredID === realID) {
-        // ذخیره آیدی در Google Sheet
+        // ارسال به Google Sheet
         fetch("https://script.google.com/macros/s/AKfycbzroT0gdaJxJiLmtIaGHKODQgssIA4Wl_QxR3ZSG7bpAua8ZiDGWlCE17cfiGwE7Nfu/exec", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: "username=" + encodeURIComponent(realID)
         });
 
-        // ذخیره در حافظه مرورگر
         localStorage.setItem("joinedUser", realID);
-
         window.location.href = "join.html";
       } else {
         window.location.href = "error.html";
