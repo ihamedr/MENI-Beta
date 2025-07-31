@@ -92,22 +92,7 @@
     }
 
     setInterval(drawMatrix, 33);
-	   // ابتدا اطمینان از اینکه opacity 1 هست
-  img.style.opacity = 1;
-
-  setTimeout(() => {
-    // شروع فید اوت
-    img.style.transition = 'opacity 0.5s ease';
-    img.style.opacity = 0;
-
-    // بعد از 0.5 ثانیه که فید اوت انجام شد، تصویر رو عوض کن و فید این رو شروع کن
-    setTimeout(() => {
-      img.src = 'loading5.png';
-      img.style.opacity = 1; // فید این
-    }, 400);
-
-  }, 1500);
-	 
+	
   </script>
 </body>
 </html>
